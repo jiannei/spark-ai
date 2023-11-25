@@ -2,6 +2,7 @@
 
 <p align="center"> 讯飞星火大模型 Api.</p>
 
+[![StyleCI](https://github.styleci.io/repos/723286499/shield?branch=main&style=flat)](https://github.styleci.io/repos/723286499?branch=main&style=flat)
 
 ## Installing
 
