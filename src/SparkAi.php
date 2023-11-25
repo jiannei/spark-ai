@@ -51,7 +51,7 @@ class SparkAi
     /**
      * @throws BadOpcodeException
      */
-    public function answer(string $question):string
+    public function answer(string $question): string
     {
         $this->context[] = ['role' => 'user', 'content' => $question]; // TODO memory leak
 
