@@ -51,26 +51,11 @@ class SparkAi
     /**
      * @throws BadOpcodeException
      */
-    public function create(string $content, bool $stream = true)
+    public function answer(string $question):string
     {
-        if (! $this->config || ! $this->header || ! $this->parameter) {
-            throw new \InvalidArgumentException('配置错误，或者缺少 header 或 parameter');
-        }
+        $this->context[] = ['role' => 'user', 'content' => $question]; // TODO memory leak
 
-        // 创建ws连接对象，连接到 WebSocket 服务器
-        $client = new Client($this->assembleAuthUrl());
-
-        // 发送数据到 WebSocket 服务器
-        $this->context[] = ['role' => 'user', 'content' => $content]; // TODO memory leak
-        $client->send(json_encode([
-            'header' => $this->header,
-            'parameter' => $this->parameter,
-            'payload' => [
-                'message' => [
-                    'text' => $this->context,
-                ],
-            ],
-        ]));
+        $client = $this->buildClient();
 
         while (true) {
             $response = $client->receive();
@@ -85,9 +70,6 @@ class SparkAi
             $this->setLatestResponse($resp);
 
             $this->assembleAnswer();
-            if ($stream) {
-                yield $this->getLatestAnswer();
-            }
 
             if ($resp['header']['status'] == 2) {// 响应结束
                 break;
@@ -97,6 +79,65 @@ class SparkAi
         $this->context[] = ['role' => 'assistant', 'content' => $this->getAnswer()];
 
         return $this->getAnswer();
+    }
+
+    /**
+     * @throws BadOpcodeException
+     */
+    protected function buildClient(): Client
+    {
+        if (! $this->config || ! $this->header || ! $this->parameter) {
+            throw new \InvalidArgumentException('配置错误，或者缺少 header 或 parameter 参数');
+        }
+
+        // 创建ws连接对象，连接到 WebSocket 服务器
+        $client = new Client($this->assembleAuthUrl());
+
+        // 发送数据到 WebSocket 服务器
+        $client->send(json_encode([
+            'header' => $this->header,
+            'parameter' => $this->parameter,
+            'payload' => [
+                'message' => [
+                    'text' => $this->context,
+                ],
+            ],
+        ]));
+
+        return $client;
+    }
+
+    /**
+     * @throws BadOpcodeException
+     */
+    public function create(string $question): \Generator
+    {
+        $this->context[] = ['role' => 'user', 'content' => $question]; // TODO memory leak
+
+        $client = $this->buildClient();
+
+        while (true) {
+            $response = $client->receive();
+            $resp = json_decode($response, true);
+
+            // 异常
+            if ($resp['header']['code'] != 0) {
+                throw new \RuntimeException($resp['header']['message'], $resp['header']['code']);
+            }
+
+            // 正常
+            $this->setLatestResponse($resp);
+
+            $this->assembleAnswer();
+
+            yield $this->getLatestAnswer();
+
+            if ($resp['header']['status'] == 2) {// 响应结束
+                break;
+            }
+        }
+
+        $this->context[] = ['role' => 'assistant', 'content' => $this->getAnswer()];
     }
 
     public function getLatestTokenUsage(): int
