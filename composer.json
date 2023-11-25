@@ -1,5 +1,5 @@
 {
-    "name": "jiannei\/spark-ai",
+    "name": "jiannei/spark-ai",
     "description": "讯飞星火大模型 Api",
     "license": "MIT",
     "authors": [
@@ -8,7 +8,11 @@
             "email": "longjian.huang@foxmail.com"
         }
     ],
-    "require": {},
+    "require": {
+        "php": "^7.0",
+        "textalk/websocket": "^1.6",
+        "ext-json": "*"
+    },
     "autoload": {
         "psr-4": {
             "Jiannei\\SparkAi\\": "src"
