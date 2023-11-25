@@ -58,8 +58,7 @@ class SparkAi
         $client = $this->buildClient();
 
         while (true) {
-            $response = $client->receive();
-            $resp = json_decode($response, true);
+            $resp = json_decode($client->receive(), true);
 
             // 异常
             if ($resp['header']['code'] != 0) {
@@ -76,9 +75,9 @@ class SparkAi
             }
         }
 
-        $this->context[] = ['role' => 'assistant', 'content' => $this->getAnswer()];
+        $this->context[] = ['role' => 'assistant', 'content' => $this->answer];
 
-        return $this->getAnswer();
+        return $this->answer;
     }
 
     /**
@@ -117,8 +116,7 @@ class SparkAi
         $client = $this->buildClient();
 
         while (true) {
-            $response = $client->receive();
-            $resp = json_decode($response, true);
+            $resp = json_decode($client->receive(), true);
 
             // 异常
             if ($resp['header']['code'] != 0) {
@@ -137,7 +135,7 @@ class SparkAi
             }
         }
 
-        $this->context[] = ['role' => 'assistant', 'content' => $this->getAnswer()];
+        $this->context[] = ['role' => 'assistant', 'content' => $this->answer];
     }
 
     public function getLatestTokenUsage(): int
@@ -163,11 +161,6 @@ class SparkAi
     protected function getLatestAnswer()
     {
         return $this->getLatestResponse()['payload']['choices']['text'][0]['content'];
-    }
-
-    public function getAnswer(): string
-    {
-        return $this->answer;
     }
 
     public function withParameter(array $parameter = []): SparkAi
