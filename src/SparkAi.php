@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the jiannei/spark-ai.
+ *
+ * (c) jiannei <longjian.huang@foxmail.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace Jiannei\SparkAi;
 
 use WebSocket\BadOpcodeException;
@@ -210,9 +219,9 @@ class SparkAi
 
         // 对授权URL进行Base64编码，并添加到原始地址后面作为查询参数
         return $this->config['url'].'?'.http_build_query([
-                'host' => $ul['host'],
-                'date' => $rfc1123_format,
-                'authorization' => base64_encode($authUrl),
-            ]);
+            'host' => $ul['host'],
+            'date' => $rfc1123_format,
+            'authorization' => base64_encode($authUrl),
+        ]);
     }
 }
