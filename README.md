@@ -30,12 +30,12 @@ $ composer require jiannei/spark-ai -vvv
 use Jiannei\SparkAi\SparkAi;
 
 
-$answer = SparkAi::getInstance()->chat([
+$answer = SparkAi::getInstance()->withConfig([
     'url' => 'wss://spark-api.xf-yun.com/v3.1/chat',
     'app_id' => '',// 填入控制台中获取的 APPID
     'api_key' => '',// 填入控制台中获取的 APISecret
     'api_secret' => '',// 填入控制台中获取的 APIKey
-])->create('你是谁？');
+])->chat()->create('你是谁？');
 
 foreach ($answer as $item) {
     print_r($item);
@@ -50,12 +50,12 @@ foreach ($answer as $item) {
 use Jiannei\SparkAi\SparkAi;
 
 
-$answer = SparkAi::getInstance()->chat([
+$answer = SparkAi::getInstance()->withConfig([
     'url' => 'wss://spark-api.xf-yun.com/v3.1/chat',
     'app_id' => '',// 填入控制台中获取的 APPID
     'api_key' => '',// 填入控制台中获取的 APISecret
     'api_secret' => '',// 填入控制台中获取的 APIKey
-])->answer('你是谁？');
+])->chat()->answer('你是谁？');
 
 print_r($answer);
 ```

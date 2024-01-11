@@ -39,10 +39,9 @@ class SparkAi
         return self::$instance;
     }
 
-    public function chat(array $options, array $header = [], array $parameter = []): SparkAi
+    public function chat(array $header = [], array $parameter = []): SparkAi
     {
-        $this->withConfig($options)
-            ->withHeader($header)
+        $this->withHeader($header)
             ->withParameter($parameter);
 
         return $this;
