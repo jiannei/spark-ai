@@ -5,13 +5,13 @@
     "authors": [
         {
             "name": "jiannei",
-            "email": "longjian.huang@foxmail.com"
+            "email": "longjian.comhuang@foxmail.com"
         }
     ],
     "require": {
         "php": "^7.0 || ^8.0",
-        "textalk/websocket": "^1.6",
-        "ext-json": "*"
+        "ext-json": "*",
+        "textalk/websocket": "1.4.0"
     },
     "autoload": {
         "psr-4": {
