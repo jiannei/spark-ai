@@ -12,6 +12,7 @@
 namespace Jiannei\SparkAi;
 
 use WebSocket\Client;
+use WebSocket\Message\Text;
 
 class SparkAi
 {
@@ -53,7 +54,7 @@ class SparkAi
         $client = $this->buildClient();
 
         while (true) {
-            $resp = json_decode($client->receive(), true);
+            $resp = json_decode($client->receive()?->getContent(), true);
 
             // 异常
             if ($resp['header']['code'] != 0) {
@@ -85,7 +86,7 @@ class SparkAi
         $client = new Client($this->assembleAuthUrl());
 
         // 发送数据到 WebSocket 服务器
-        $client->text(json_encode([
+        $client->send(new Text(json_encode([
             'header' => $this->header,
             'parameter' => $this->parameter,
             'payload' => [
@@ -93,7 +94,7 @@ class SparkAi
                     'text' => $this->context,
                 ],
             ],
-        ]));
+        ])));
 
         return $client;
     }
@@ -105,7 +106,7 @@ class SparkAi
         $client = $this->buildClient();
 
         while (true) {
-            $resp = json_decode($client->receive(), true);
+            $resp = json_decode($client->receive()?->getContent(), true);
 
             // 异常
             if ($resp['header']['code'] != 0) {
