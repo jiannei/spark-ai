@@ -1,11 +1,11 @@
 {
-    "name": "niclalalla/spark-ai",
+    "name": "jiannei/spark-ai",
     "description": "讯飞星火大模型 Api",
     "license": "MIT",
     "authors": [
         {
             "name": "jiannei",
-            "email": "longjian.comhuang@foxmail.com"
+            "email": "jiannei@sinan.fun"
         },
         {
             "name": "Nic",
@@ -13,9 +13,9 @@
         }
     ],
     "require": {
-        "php": "^7.0 || ^8.0",
+        "php": "^8.1",
         "ext-json": "*",
-        "textalk/websocket": "1.4.0"
+        "phrity/websocket": "^2.2"
     },
     "autoload": {
         "psr-4": {

@@ -12,7 +12,6 @@
 
 - [星火大模型 API 免费套餐](https://xinghuo.xfyun.cn/sparkapi?scr=price)
 - [官方文档](https://www.xfyun.cn/doc/spark/Web.html)
-- [原项目地址](https://github.com/jiannei/spark-ai "spark-ai")
 
 ## 安装
 

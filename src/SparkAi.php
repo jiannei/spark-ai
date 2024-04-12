@@ -11,7 +11,6 @@
 
 namespace Jiannei\SparkAi;
 
-use WebSocket\BadOpcodeException;
 use WebSocket\Client;
 
 class SparkAi
@@ -47,9 +46,6 @@ class SparkAi
         return $this;
     }
 
-    /**
-     * @throws BadOpcodeException
-     */
     public function answer(string $question): string
     {
         $this->context[] = ['role' => 'user', 'content' => $question]; // TODO memory leak
@@ -79,9 +75,6 @@ class SparkAi
         return $this->answer;
     }
 
-    /**
-     * @throws BadOpcodeException
-     */
     protected function buildClient(): Client
     {
         if (! $this->config || ! $this->header || ! $this->parameter) {
@@ -92,7 +85,7 @@ class SparkAi
         $client = new Client($this->assembleAuthUrl());
 
         // 发送数据到 WebSocket 服务器
-        $client->send(json_encode([
+        $client->text(json_encode([
             'header' => $this->header,
             'parameter' => $this->parameter,
             'payload' => [
@@ -105,9 +98,6 @@ class SparkAi
         return $client;
     }
 
-    /**
-     * @throws BadOpcodeException
-     */
     public function create(string $question): \Generator
     {
         $this->context[] = ['role' => 'user', 'content' => $question]; // TODO memory leak
